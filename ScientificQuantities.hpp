@@ -103,7 +103,7 @@ namespace SciQ {
          * The above code will display "1" as \c a equal 1000 m and this
          * value equals 1 km. 
          */
-        constexpr double in( const Quantity& rhs ) {
+        constexpr double in( const Quantity& rhs ) const {
             return value / rhs.value;
         }
 
@@ -116,14 +116,14 @@ namespace SciQ {
          */
         template<int L2, int M2, int T2, int EC2, int TT2, int AS2, int LI2>
         constexpr bool 
-        compType( const Quantity<L2, M2, T2, EC2, TT2, AS2, LI2>& rhs ) {
+        compType( const Quantity<L2, M2, T2, EC2, TT2, AS2, LI2>& /* unused */) const {
             return (L==L2 && M==M2 && T==T2 && EC==EC2 && TT==TT2 && AS==AS2 && LI==LI2);
         }
 
         /**
          * Get the value of the current quantity in its fundamental SI unit.
          */
-        constexpr double getValue() {
+        constexpr double getValue() const {
             return value;
         }
 
@@ -150,7 +150,7 @@ namespace SciQ {
          * getValue(). Overloading the double operator allows us to work with
          * the class seamlessly with other packages and environments.
          */
-        constexpr operator double() {
+        constexpr operator double() const {
             return value;
         }
     private:
@@ -283,6 +283,11 @@ namespace SciQ {
                const Quantity<L, M, T, EC, TT, AS, LI>& rhs ) {
         return Quantity<-L, -M, -T, -EC, -TT, -AS, -LI>( lhs / rhs.getValue() );
     }
+
+    // -------------------------------------------------------------------------
+    // Some mathematical functions that may be applied directly to Quantity<>
+    // instances.
+    // -------------------------------------------------------------------------
 
     // C++11 Physical quantity classes
     // Base units of the SI system
@@ -1028,7 +1033,7 @@ namespace SciQ {
     typename std::enable_if<not HasFundamentalUnit<Quantity<L, M, T, EC, TT, AS, LI>>::value>::type* = nullptr>
     std::ostream& operator<<( std::ostream& os, const Quantity<L, M, T, EC, TT, AS, LI>& q ) 
     {
-        static const std::array<std::string, NUM_BASE_UNITS> base_units {
+        static const std::array<std::string, NUM_BASE_UNITS> base_units {{
             FundamentalUnit<Length>::Name,  
             FundamentalUnit<Mass>::Name,  
             FundamentalUnit<Time>::Name,  
@@ -1036,12 +1041,12 @@ namespace SciQ {
             FundamentalUnit<Temperature>::Name,  
             FundamentalUnit<Substance>::Name,  
             FundamentalUnit<Luminous>::Name  
-        } ;
-        static const std::array<int, NUM_BASE_UNITS> exponents { 
+        }} ;
+        static const std::array<int, NUM_BASE_UNITS> exponents {{
             L, M, T, EC, TT, AS, LI
-        } ;
+        }} ;
         os << q.getValue() ;
-        for(int i=0; i<exponents.size(); ++i) {
+        for(size_t i=0; i<exponents.size(); ++i) {
             if (0 == exponents[i]) {
                 continue ;
             } 
