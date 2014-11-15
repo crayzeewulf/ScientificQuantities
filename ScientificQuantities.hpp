@@ -288,6 +288,38 @@ namespace SciQ {
     // Some mathematical functions that may be applied directly to Quantity<>
     // instances.
     // -------------------------------------------------------------------------
+    /**
+     * Template used to calculate square root of SciQ::Quantity instances
+     * that have even exponents. Compiler error will be generated if the 
+     * exponents are not even.
+     */
+    template<int L, int M, int T, int EC, int TT, int AS, int LI>
+    constexpr
+    Quantity<L/2, M/2, T/2, EC/2, TT/2, AS/2, LI/2> 
+    sqrt(const Quantity<L, M, T, EC, TT, AS, LI>& physQuantity)
+    {
+        //
+        // Compile time check to make sure that all exponents are even.
+        //
+        static_assert( (L%2 == 0) && (M%2 == 0) && (T%2 == 0) &&
+                       (EC%2 == 0) && (TT%2 == 0) && (AS%2 == 0) &&
+                       (LI%2 == 0), 
+                       "All exponents must be even to use sqrt()" ) ;
+        using ResultType = Quantity<L/2, M/2, T/2, EC/2, TT/2, AS/2, LI/2> ;
+        return ResultType(std::sqrt(physQuantity.getValue())) ;
+    }
+
+
+    /**
+     * Compute and return the absolute value of the specified quantity.
+     */
+    template<int L, int M, int T, int EC, int TT, int AS, int LI>
+    constexpr
+    Quantity<L, M, T, EC, TT, AS, LI> 
+    fabs(const Quantity<L, M, T, EC, TT, AS, LI>& physQuantity)
+    {
+        return Quantity<L, M, T, EC, TT, AS, LI>(std::fabs(physQuantity.getValue())) ;
+    }
 
     // C++11 Physical quantity classes
     // Base units of the SI system
