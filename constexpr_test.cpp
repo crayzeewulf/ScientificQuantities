@@ -42,6 +42,12 @@ int main(int argc, char *argv[])
         constexpr auto foo = Length(1.0) ;
         constexpr auto foo_value = foo.getValue() ;
     }
+    //
+    // Quantity::operator-()
+    //
+    {
+        constexpr auto foo = -Length(1.0) ;
+    }
     // 
     // Quantity:: operator double() 
     //

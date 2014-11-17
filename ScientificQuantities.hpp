@@ -146,6 +146,13 @@ namespace SciQ {
         }
 
         /**
+         * Return the negative of the current quantity.
+         */
+        constexpr Quantity operator-() const {
+            return Quantity(-value) ;
+        }
+
+        /**
          * Convert this quantity into a double. This is the same as calling
          * getValue(). Overloading the double operator allows us to work with
          * the class seamlessly with other packages and environments.
