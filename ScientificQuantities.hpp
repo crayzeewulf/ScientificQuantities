@@ -14,6 +14,18 @@
 #define SCIENTIFICQUANTITIES_HPP_
 
 #include <ostream>
+//
+// On Windows several math constants such as M_PI are not defined by 
+// default. They are available only if _USE_MATH_DEFINES is defined 
+// before including <cmath>. Similary, _GNU_SOURCE must be defined 
+// before including <cmath> while using MinGW G++. 
+//
+// See http://msdn.microsoft.com/en-us/library/4hwaceh6.aspx
+//
+#ifdef __WIN32
+#  define _USE_MATH_DEFINES
+#  define _GNU_SOURCE
+#endif
 #include <cmath>
 #include <assert.h>
 #include <stdexcept>
