@@ -5,7 +5,6 @@
  *      Author: navid nourani-vatani
  *      Locaton: https://github.com/nourani/ScientificQuantities
  */
-
 #include <iostream>
 
 #include "ScientificQuantities.hpp"
@@ -161,6 +160,12 @@ int main( int argc, char ** argv ) {
 
     double l = l1;
     cout << "\n\tAssigning a length (" << l1 << ") to a double: " << l << endl;
+
+    //
+    // Negative speed. 
+    //
+    Speed neg_speed = -SciQ::Speed(5.0) ; 
+    cout << "\n\tUnary minus operator to get negative values: " << neg_speed << endl ;
 
     return 0;
 }
