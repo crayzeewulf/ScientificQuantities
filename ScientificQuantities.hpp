@@ -14,22 +14,36 @@
 #define SCIENTIFICQUANTITIES_HPP_
 
 #include <ostream>
-//
-// On Windows several math constants such as M_PI are not defined by 
-// default. They are available only if _USE_MATH_DEFINES is defined 
-// before including <cmath>. Similary, _GNU_SOURCE must be defined 
-// before including <cmath> while using MinGW G++. 
-//
-// See http://msdn.microsoft.com/en-us/library/4hwaceh6.aspx
-//
-#ifdef __WIN32
-#  define _USE_MATH_DEFINES
-#  define _GNU_SOURCE
-#endif
 #include <cmath>
 #include <assert.h>
 #include <stdexcept>
 #include <array>
+
+//
+// M_PI is not part of the C/C++ standard. We define it if it is not already
+// defined in <cmath>
+//
+#ifndef M_PI
+#   define M_PI	3.14159265358979323846
+#endif
+
+// 
+// _C, _S, and _N are defined in <ctypes.h> under Cygwin. These conflict with 
+// operator"" in this file. We temporarily undefine them at the top of the 
+// file and redefine them at the bottom. 
+//
+#ifdef _C
+#  define _C_OLD _C
+#  undef _C
+#endif
+#ifdef _S
+#  define _S_OLD _S
+#  undef _S
+#endif
+#ifdef _N
+#  define _N_OLD _N
+#  undef _N
+#endif
 
 namespace SciQ {
     /**
@@ -1115,5 +1129,17 @@ namespace SciQ {
 
 // conversion macro
 #define ConvertTo(_x, _y) (_x).Convert(1.0_##_y)
+
+#ifdef _C_OLD
+#  define _C _C_OLD
+#endif
+#ifdef _S_OLD
+#  define _S _S_OLD
+#endif
+#ifdef _N_OLD
+#  define _N _N_OLD
+#endif
+
+
 
 #endif /* SCIENTIFICQUANTITIES_HPP_ */
